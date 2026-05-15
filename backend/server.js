@@ -32,12 +32,8 @@ async function start() {
     res.json(all);
   });
 
-    app.post('/api/payment/create-order', requireAuth, async (req, res) => {
-      const { items } = req.body;
-      if (!Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ error: 'Cart is empty' });
-      }
-  
+    app.post('/api/payment/create-order', async (req, res) => {
+
       const rpOrder = {
         amount: Math.random(1,100),
         currency: 'INR',
