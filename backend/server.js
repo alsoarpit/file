@@ -33,17 +33,26 @@ async function start() {
   });
 
     app.post('/api/payment/create-order', async (req, res) => {
+      const { amount, userEmail } = req.body || {};
 
-      const rpOrder = {
-        amount: Math.random(1,100),
+      console.log(amount, userEmail)
+
+      const order = {
+        amount:`${amount}`,
         currency: 'INR',
         receipt: `rcpt_${Date.now()}`,
+        userEmail,
+        status: 'created',
+        createdAt: new Date(),
       };
-  
+
+      const result = await orders.insertOne(order);
+
       res.json({
-        orderId: rpOrder.id,
-        amount: rpOrder.amount,
-        currency: rpOrder.currency,
+        orderId: result.insertedId,
+        amount: order.amount,
+        currency: order.currency,
+        receipt: order.receipt,
       });
     });
 
