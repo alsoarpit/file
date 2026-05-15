@@ -1,10 +1,10 @@
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const Razorpay = require('razorpay');
-const admin = require('firebase-admin');
-const serviceAccount = require('./firebase-service-account.json');
+// const Razorpay = require('razorpay');
+// const admin = require('firebase-admin');
+// const serviceAccount = require('./firebase-service-account.json');
 
 const MONGODB_URI = "mongodb+srv://arpitpepcoding_db_user:yk4gPm1Cz1dV9BEw@cluster0.c7j3uay.mongodb.net/?appName=Cluster0";
 const APP_NAME = "MyShop";
@@ -25,7 +25,9 @@ async function start() {
   console.log('Connected to MongoDB');
 
   const db = client.db('dummy');
+  const users = db.collection('users');
   const products = db.collection('product');
+  const orders = db.collection('orders');
 
 
   app.get('/api/products', async (_req, res) => {
