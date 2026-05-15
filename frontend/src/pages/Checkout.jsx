@@ -49,7 +49,7 @@ function Checkout() {
         description: 'Order payment',
         order_id: data.orderId,
         prefill: { email: user?.email, name: user?.displayName },
-        theme: { color: '#2563eb' },
+        theme: { color: '#000000' },
         handler: async (response) => {
           setStatus('Verifying payment...')
           try {
@@ -80,11 +80,11 @@ function Checkout() {
   }
 
   return (
-    <div className="p-10 text-center">
+    <div className="p-10 text-center bg-black min-h-screen text-white">
       {error ? (
         <>
-          <p className="text-red-600">{error}</p>
-          <button onClick={() => navigate('/cart')} className="mt-4 text-blue-600 hover:underline">Back to cart</button>
+          <p className="text-neutral-400">{error}</p>
+          <button onClick={() => navigate('/cart')} className="mt-4 text-white hover:underline">Back to cart</button>
         </>
       ) : (
         <p>{status}</p>

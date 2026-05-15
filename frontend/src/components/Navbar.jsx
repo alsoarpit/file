@@ -28,14 +28,14 @@ function Navbar() {
   if (!user) return null
 
   return (
-    <nav className="flex items-center justify-between px-6 py-3 border-b bg-white">
+    <nav className="flex items-center justify-between px-6 py-3 border-b border-neutral-800 bg-black text-white">
       <Link to="/dashboard" className="text-xl font-semibold">MyShop</Link>
       <div className="flex items-center gap-6">
-        <Link to="/dashboard">Products</Link>
-        <Link to="/cart">Cart ({count})</Link>
-        <Link to="/orders">Orders</Link>
-        <span className="text-sm text-gray-600">{user.email}</span>
-        <button onClick={handleLogout} className="text-sm text-red-600 hover:underline">Logout</button>
+        <Link to="/dashboard" className="hover:text-neutral-400">Products</Link>
+        <Link to="/cart" className="hover:text-neutral-400">Cart ({count})</Link>
+        <Link to="/orders" className="hover:text-neutral-400">Orders</Link>
+        <span className="text-sm text-neutral-400">{user.email}</span>
+        <button onClick={handleLogout} className="text-sm text-neutral-400 hover:text-white hover:underline">Logout</button>
       </div>
     </nav>
   )
