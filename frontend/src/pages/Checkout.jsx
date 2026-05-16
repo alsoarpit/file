@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api'
-import { useAuth } from '../AuthContext'
 import { getCart, clearCart } from '../cart'
 
 const loadRazorpay = () =>
@@ -15,10 +14,10 @@ const loadRazorpay = () =>
   })
 
 function Checkout() {
-  const { user } = useAuth()
   const navigate = useNavigate()
   const [status, setStatus] = useState('Preparing payment...')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const cart = getCart()
@@ -48,23 +47,10 @@ function Checkout() {
         name: data.appName,
         description: 'Order payment',
         order_id: data.orderId,
-        prefill: { email: user?.email, name: user?.displayName },
         theme: { color: '#000000' },
-        handler: async (response) => {
-          setStatus('Verifying payment...')
-          try {
-            await api.post('/api/payment/verify', {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              items: data.items,
-              totalAmount: data.amount / 100,
-            })
-            clearCart()
-            navigate('/orders', { replace: true })
-          } catch (err) {
-            setError('Payment verification failed: ' + (err.response?.data?.error || err.message))
-          }
+        handler: () => {
+          clearCart()
+          setSuccess(true)
         },
         modal: {
           ondismiss: () => navigate('/cart', { replace: true }),
@@ -81,7 +67,20 @@ function Checkout() {
 
   return (
     <div className="p-10 text-center bg-black min-h-screen text-white">
-      {error ? (
+      {success ? (
+        <div className="max-w-md mx-auto border border-neutral-800 rounded-lg p-10 bg-neutral-950">
+          <h1 className="text-3xl font-bold mb-3">Payment successful</h1>
+          <p className="text-neutral-400 mb-6">Thank you for your order.</p>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="bg-white text-black px-6 py-2 rounded hover:bg-neutral-200 font-medium"
+            >
+              Continue shopping
+            </button>
+          </div>
+        </div>
+      ) : error ? (
         <>
           <p className="text-neutral-400">{error}</p>
           <button onClick={() => navigate('/cart')} className="mt-4 text-white hover:underline">Back to cart</button>

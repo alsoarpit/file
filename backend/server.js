@@ -35,8 +35,6 @@ async function start() {
     app.post('/api/payment/create-order', async (req, res) => {
       const { amount, userEmail } = req.body || {};
 
-      console.log(amount, userEmail)
-
       const order = {
         amount:`${amount}`,
         currency: 'INR',
